@@ -1,0 +1,15 @@
+Dim wordObj As Object : Set wordObj = GetObject(, "Word.application")
+Dim j As Integer : j = 1
+wordObj.Visible = True
+With wordObj.ActiveDocument     
+  With .Bookmarks("table").Range.Tables(1) ''''bookmark the whole table   
+    j = 1       
+    For i = 2 To 3 ''''''no of rows on source table           
+      .Cell(i, 1).Range.Text = Sheets(1).Cells(j, 1).Text            
+      .Cell(i, 2).Range.Text = Sheets(1).Cells(j, 2).Text            
+      .Cell(i, 3).Range.Text = Sheets(1).Cells(j, 3).Text           
+      j = j + 1        
+    Next i    
+  End With
+End With
+Set wordObj = Nothing

@@ -1,3 +1,4 @@
+/*
 Dim wordObj As Object : Set wordObj = GetObject(, "Word.application")
 Dim j As Integer : j = 1
 wordObj.Visible = True
@@ -13,3 +14,4 @@ With wordObj.ActiveDocument    
   End With
 End With
 Set wordObj = Nothing
+*/

@@ -1,0 +1,59 @@
+/*''SCRIPT TO get edgar call/put options data into excel
+''e https://searchwww.sec.gov/EDGARFSClient/jsp/EDGAR_MainAccess.jsp?search_text=*&sort=Date&formType=Form13FHR&isAdv=true&stemming=true&numResults=100&fromDate=01/18/2018&toDate=01/18/2018&numResults=100
+
+
+''****************************PART 1 Getting all links from webpage************************************
+
+Dim IE as Object : Set IE = CreateObject("internetexplorer.application") : IE.Visible = True
+
+url_name = Sheets("Control").TextBox1.Text
+If url_name = "" Then MsgBox "Enter Valid Link"
+IE.navigate (url_name)
+Do
+DoEvents
+Loop Until IE.readyState = 4
+
+Dim counter As Integer : counter = 1
+Set AllHyperlinks = IE.document.getElementsByTagName("a")    
+For Each hyper_link In AllHyperlinks   
+  Sheets("URL_list").Cells(counter, 1).Value = hyper_link    
+  counter = counter + 1    
+Next
+
+''****************************PART 2 Extracting data from each link****************************
+
+''Loop through each link in Sheet
+
+For i = Sheets("URL_LIST").Cells(i,2).text
+
+'''Create http request using early binding
+
+Dim http As Object, html As New HTMLDocument
+MyURL = Sheets("URL_List").Cells(i, 1).Text
+Set http = CreateObject("MSXML2.ServerXMLHTTP.6.0")http.Open "GET", MyURL, False
+http.send
+Do While http.readyState <> 4    
+  DoEvents
+Loop
+html.body.innerHTML = http.responseText
+
+''GETTING table data 
+
+elemCollection As Object
+Set elemCollection = html.getElementsByTagName("TABLE")
+For t = 0 To (elemCollection.Length - 1)
+    For r = 0 To (elemCollection(t).Rows.Length - 1)             
+      For c = 0 To (elemCollection(t).Rows(r).Cells.Length - 1)                 
+        ThisWorkbook.Worksheets("Raw_Data").Cells(r + 1, c + 1) = elemCollection(t).Rows(r).Cells(c).innerText             
+      Next c         
+    Next r
+Next t
+''Do whatever with the data and move onto next url
+Next i
+
+''''clean page
+
+Set http = Nothing
+Set html = Nothing
+Set elemCollection = Nothing
+*/

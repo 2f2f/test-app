@@ -1,0 +1,63 @@
+/*
+Sub buildTable()
+'Array
+Dim res, data As Worksheet
+Dim tName(1 To 20) As String
+Dim i As Integer
+Dim thisWeek As Integer
+Dim newCoverageWeek As Integer
+
+'vars for stats
+Dim cCount As Integer
+Dim coverageCount As Integer
+Dim nCount As Long
+Dim aCount As Double
+
+Dim r As Integer
+Dim crossC As Integer
+Dim notionalC As Integer
+Dim advC As Integer
+
+thisWeek = WorksheetFunction.WeekNum(Date)
+newCoverageWeek = (thisWeek - 34)
+res.Range("k1").Value = thisWeek
+res.Range("k2").Value = newCoverageWeek
+
+
+Set res = Worksheets("res")
+Set data = Worksheets("data")
+
+'reading in coverage array
+i = 1
+For Each c In res.Range("a2:a21")    
+		tName(i) = c.Text    
+		i = i + 1
+Next c
+
+'calculating notional
+Dim dRange As Range
+Set dRange = Range(data.Range("b2"), data.Range("b2").End(xlDown))
+
+r = 2
+crossC = 2
+notionalC = 3
+advC = 4
+
+For coverageCount = 1 To 20    
+		cCount = 0    
+		nCount = 0    
+		aCount = 0        
+		For Each c In dRange            
+				If c.Value = tName(coverageCount) Or c.Offset(0, 1).Value = tName(coverageCount) Then                
+						cCount = cCount + 1                
+						nCount = nCount + Val(c.Offset(0, 6).Value)               
+						aCount = aCount + Val(c.Offset(0, 8).Value)            
+				End If        
+		Next c    
+		res.Cells(r, crossC).Value = cCount    
+		res.Cells(r, notionalC).Value = nCount    
+		res.Cells(r, advC).Value = aCount   
+		r = r + 1
+Next coverageCount
+End Sub
+*/
